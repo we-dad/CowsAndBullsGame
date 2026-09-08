@@ -103,6 +103,75 @@ Whenever a UI index is used as a key into a collection the framework owns, that 
 
 ## Known limitations
 
+Save-file obfuscation and its limits are covered in [ARCHITECTURE.md](ARCHITECTURE.md).
+
+| Area | Current state | Better approach |
+|---|---|---|
+| Locale selection | By array index | By locale code |
+| Receipt offset | Hard-coded `-0.6f` | Derived from prefab height at runtime |
+| Guess evaluation | Embedded in `MonoBehaviour` | Pure function with unit tests |
+
+## What three months solo taught me
+
+Every integration — PlayFab, NativeShare, Unity Localization, DOTween — took far longer to wire up correctly than to actually use. Choosing them cost hours. Getting each one's initialization order, platform differences, and error paths right cost days.
+
+Estimating for integration rather than for features is the planning lesson I took from this project, and it's held up on everything I've built since.| Compose the full history into a dedicated camera and render once | ✅ Chosen |
+
+**Implementation**
+The complete guess history is laid out in a camera view sized to the content rather than the screen, captured in a single render, and passed to `NativeShare` with a message. The share sheet is the platform's own, so the flow behaves natively on both iOS and Android without separate code paths.
+
+**Lesson**
+When the viewport is smaller than the content, capture from a camera framed on the content — not from the screen.
+
+---
+
+## 3. Guess handling grew into one method that did everything
+
+**Symptom**
+Submitting a guess required checking that every input slot was filled, assembling the digits into a string, resetting the cursor, decrementing the score and attempt counter, spawning the receipt row, and playing two sound effects. All of it ended up inside a single method.
+
+**Diagnosis**
+`CheckCowsAndBulls()` in `GameManager` came to own input validation, scoring, UI animation, prefab instantiation, and audio at once. The guard against double submission is a bare boolean:
+
+```csharp
+if (cheackInputEmpty == 0 && delayGuessButton == false)
+```
+
+`delayGuessButton` is set true on entry and cleared later by animation timing, which means the input cooldown is tied to how long a tween happens to take rather than to when the game is actually ready for the next guess. It works, but the two are only related by coincidence.
+
+**What I would do differently**
+Pull guess evaluation out as a pure function — one that takes a guess and a hidden number and returns cow and bull counts, with no `MonoBehaviour` dependency and no knowledge of the UI. That function would be directly unit-testable, and the rest of the method would shrink to orchestration.
+
+**Lesson**
+Game logic that can be written as a pure function should live outside `MonoBehaviour`. Everything in this codebase that resisted testing is logic that got tangled with presentation, and untangling it is almost always mechanical once you see the seam.
+
+---
+
+## 4. Localizing by array index
+
+**Symptom**
+Language switching works correctly with two languages, but it is fragile by construction rather than by accident.
+
+**Diagnosis**
+`LocalizationManager` maps dropdown positions directly onto locale array positions:
+
+```csharp
+case 0: LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[0];
+case 1: LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[1];
+```
+
+`AvailableLocales.Locales` carries no ordering guarantee. Adding a third language, or any change in how locales load, can silently remap what each dropdown entry selects. The failure mode is the worst kind: nothing throws, nothing logs, and the code still looks correct in review — the app just quietly switches to the wrong language.
+
+**Fix**
+Select by locale identifier (`"ar"`, `"en"`) instead of position, so the mapping is explicit and independent of load order.
+
+**Lesson**
+Whenever a UI index is used as a key into a collection the framework owns, that framework's ordering becomes an undocumented dependency of your code.
+
+---
+
+## Known limitations
+
 | Area | Current state | Better approach |
 |---|---|---|
 | Save "encryption" | XOR against a fixed four-character key, currently disabled | Call it obfuscation — accurate, and acceptable for a game with no purchasable state |

@@ -75,13 +75,13 @@ Guesses are spawned as prefab rows into a scrolling container. The receipt anima
 
 Save data is serialized to JSON in the platform's persistent data path, gathered from any component implementing `IDataPrisistence`.
 
-Full write-up: **[Architecture.md](Architecture.md)**
+Full write-up: **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**
 
 ## Problems worth reading about
 
 Three months solo produced a few things worth documenting properly — why the obvious approaches to the receipt animation didn't work, how to share a scrolling board as one image, and a localization design that's fragile in a way that doesn't show up in code review.
 
-They're written up in **[Challenges.md](Challenges.md)**.
+They're written up in **[docs/CHALLENGES.md](docs/CHALLENGES.md)**.
 
 ## Running it
 

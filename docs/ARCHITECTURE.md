@@ -2,7 +2,7 @@
 
 Cows & Bulls is a single-scene-per-screen Unity project built around a set of persistent singleton managers, with gameplay state held in `GameManager` and cross-cutting concerns (sound, save data, game mode, leaderboard, localization) split into their own always-alive objects.
 
-Unity 2020.3.34f1 · C# · PlayFab · DOTween / LeanTween
+Unity 6000.4.7f1 · C# · PlayFab · DOTween / LeanTween
 
 ---
 
@@ -84,15 +84,9 @@ modifiedData += (char)(data[i] ^ encryptionCodeWord[i % encryptionCodeWord.Lengt
 
 ## Localization
 
-Built on Unity's Localization package. `LocalizationManager` maps a dropdown selection onto `LocalizationSettings.SelectedLocale`.
+Built on Unity's Localization package. `LocalizationManager` maps a dropdown selection onto `LocalizationSettings.SelectedLocale`, selecting the locale by its position in `AvailableLocales.Locales`.
 
-**Known fragility.** Locales are selected by array index:
-
-```csharp
-LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[0];
-```
-
-`AvailableLocales.Locales` has no guaranteed order, so adding a third language — or a change in load order — silently remaps the existing dropdown entries. Selecting by locale code rather than index would remove the coupling.
+Why selecting by position is fragile, and what it should be instead: [CHALLENGES.md](CHALLENGES.md).
 
 ## Third-party packages
 

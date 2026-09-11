@@ -6583,9 +6583,13 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
+  Hint: 0
+  HintRemove: 0
   nameInput1: {fileID: 944025408}
   nameInput2: {fileID: 66176175}
   PlayerDataObject: {fileID: 221362062}
+  hintText: {fileID: 736926249}
+  RemoveHintText: {fileID: 2084771708}
   references:
     version: 2
     RefIds: []
@@ -6991,7 +6995,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 320.4}
+  m_SizeDelta: {x: 0, y: 403.14}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &936584251
 GameObject:
@@ -15023,11 +15027,11 @@ RectTransform:
   - {fileID: 1539313992}
   m_Father: {fileID: 932040229}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 1}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -0.00024414062, y: 13.599731}
   m_SizeDelta: {x: 208.3, y: 320.4}
-  m_Pivot: {x: 1, y: 1}
+  m_Pivot: {x: 1, y: 0}
 --- !u!1 &1539313991
 GameObject:
   m_ObjectHideFlags: 0
@@ -24812,11 +24816,11 @@ RectTransform:
   - {fileID: 936584252}
   m_Father: {fileID: 932040229}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: -0.000061035156, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0.00018310547, y: 75.21979}
   m_SizeDelta: {x: 401.14, y: 253.56}
-  m_Pivot: {x: 0, y: 0.5}
+  m_Pivot: {x: 0, y: 0}
 --- !u!1 &2084771707
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,10 +9,14 @@ public class PlayerDataManager : MonoBehaviour
     [SerializeField] LocalizedString ChallngeScore;
     [SerializeField] LocalizedString StagesPlace;
     [SerializeField] LocalizedString ChallngePlace;
+    [SerializeField] int Hint;
+    [SerializeField] int HintRemove;
     [SerializeField] TMP_InputField nameInput1;
     [SerializeField] TMP_InputField nameInput2;
 
     public GameObject PlayerDataObject;
+    public TMP_Text hintText;
+    public TMP_Text RemoveHintText;
 
     // Singleton instance.
     public static PlayerDataManager Instance = null;
@@ -35,6 +39,12 @@ public class PlayerDataManager : MonoBehaviour
     void Start()
     {
         dataUbdated();
+        
+        Hint = PlayerPrefs.GetInt("Hint");
+        HintRemove = PlayerPrefs.GetInt("HintRemove");
+
+        hintText.text = Hint.ToString();
+        RemoveHintText.text = HintRemove.ToString();
     }
     void OnEnable()
     {
@@ -51,7 +61,7 @@ public class PlayerDataManager : MonoBehaviour
 
         ChallngePlace.Arguments = new[] { PlayerPrefs.GetString("PlayerChallengPlace") ?? "0" };
         ChallngePlace.StringChanged += PlayerChallengPlace;
-
+        
     }
 
     void OnDisable()
@@ -60,6 +70,7 @@ public class PlayerDataManager : MonoBehaviour
         StagesPlace.StringChanged -= PlayerStrikePlace;
         ChallngeScore.StringChanged -= PlayerChallengScore;
         ChallngePlace.StringChanged -= PlayerChallengPlace;
+
     }
 
     void PlayerStrikeScore(string s)
@@ -80,7 +91,6 @@ public class PlayerDataManager : MonoBehaviour
     {
         PlayerDataObject.transform.GetChild(5).GetComponent<TMP_Text>().text = s;
     }
-
 
     // void OnGUI()
     // {
